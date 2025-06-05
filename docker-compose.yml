@@ -1,0 +1,77 @@
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: fudo
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: fudo
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - "5672:5672"    # para servicios
+      - "15672:15672"  # UI web
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+    working_dir: /app
+    volumes:
+      - ./services/auth-service:/app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+    stdin_open: true
+    tty: true
+
+  product-service:
+    build:
+      context: ./services/product-service
+    working_dir: /app
+    volumes:
+      - ./services/product-service:/app
+    ports:
+      - "4001:4000"
+    depends_on:
+      - postgres
+      - rabbitmq
+    stdin_open: true
+    tty: true
+
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+    working_dir: /app
+    volumes:
+      - ./services/api-gateway:/app
+    ports:
+      - "8080:4000"
+    depends_on:
+      - auth-service
+      - product-service
+    stdin_open: true
+    tty: true
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:

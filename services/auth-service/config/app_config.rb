@@ -4,4 +4,6 @@ module AppConfig
     DB_USER       = ENV.fetch('DB_USER', 'fudo')
     DB_PASS       = ENV.fetch('DB_PASS', 'secret')
     DB_NAME       = ENV.fetch('DB_NAME', 'fudo')
+    SECRET_KEY    = ENV.fetch('JWT_SECRET')
+
 end

@@ -1,5 +1,9 @@
 require 'app_config'
 
+NEEDS_API_KEY = {
+    'POST' => ['/register'],
+    'GET'  => ['/validate_token']
+}
 
 class ApiKeyValidator
     def initialize(app)
@@ -8,12 +12,16 @@ class ApiKeyValidator
 
     def call(env)
         req = Rack::Request.new(env)
+        method = req.request_method
+        path = req.path
 
-        if req.post? && req.path == '/register'
+        if NEEDS_API_KEY[method]&.include?(path)
             api_key = req.get_header('HTTP_X_API_KEY')
             expected = AppConfig::ADMIN_API_KEY
 
-            return [401, { 'Content-Type' => 'application/json' }, ['{"error":"Unauthorized"}']] if api_key.nil? || api_key != expected
+            if api_key.nil? || api_key != expected
+                return [401, { 'Content-Type' => 'application/json' }, [{error: 'Unauthorized'}.to_json]]
+            end
         end
 
         @app.call(env)

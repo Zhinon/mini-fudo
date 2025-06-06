@@ -24,6 +24,8 @@ services:
   auth-service:
     build:
       context: ./services/auth-service
+    env_file:
+      - ./services/auth-service/.env
     working_dir: /app
     volumes:
       - ./services/auth-service:/app

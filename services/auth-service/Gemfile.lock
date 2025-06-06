@@ -1,11 +1,14 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    bcrypt (3.1.20)
+    bigdecimal (3.2.2)
     byebug (12.0.0)
     coderay (1.1.3)
     json (2.12.2)
     method_source (1.1.0)
     nio4r (2.7.4)
+    pg (1.5.9)
     pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -15,16 +18,21 @@ GEM
     puma (6.6.0)
       nio4r (~> 2.0)
     rack (3.1.16)
+    sequel (5.93.0)
+      bigdecimal
 
 PLATFORMS
   x86_64-linux-gnu
 
 DEPENDENCIES
+  bcrypt
   json
+  pg
   pry
   pry-byebug
   puma
   rack
+  sequel
 
 BUNDLED WITH
    2.4.20

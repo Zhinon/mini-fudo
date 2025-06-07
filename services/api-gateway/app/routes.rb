@@ -1,14 +1,17 @@
-require_relative './controllers/hello_controller'
+require 'controllers/healthcheck'
+require 'controllers/products'
 
 module Routes
   def self.call(env)
     req = Rack::Request.new(env)
 
     case [req.request_method, req.path_info]
-    when ['GET', '/hello']
-      HelloController.hello
+    when ['GET', '/healthcheck']
+        HealthcheckController.call(env)
+    when ['POST', '/products']
+        ProductsController.call(env)
     else
-      [404, { 'Content-Type' => 'application/json' }, ['{"error":"Not found"}']]
+        [404, { 'Content-Type' => 'application/json' }, ['{"error":"Not found"}']]
     end
   end
 end

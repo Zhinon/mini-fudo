@@ -53,6 +53,8 @@ services:
   api-gateway:
     build:
       context: ./services/api-gateway
+    env_file:
+      - ./services/api-gateway/.env
     working_dir: /app
     volumes:
       - ./services/api-gateway:/app

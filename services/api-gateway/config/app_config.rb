@@ -1,0 +1,7 @@
+module AppConfig
+    ADMIN_API_KEY = ENV.fetch('ADMIN_API_KEY')
+    RABBITMQ_HOST = ENV.fetch('RABBITMQ_HOST')
+    RABBITMQ_PORT = ENV.fetch('RABBITMQ_PORT', '5672').to_i
+    RABBITMQ_USER = ENV.fetch('RABBITMQ_USER')
+    RABBITMQ_PASS = ENV.fetch('RABBITMQ_PASS')
+end

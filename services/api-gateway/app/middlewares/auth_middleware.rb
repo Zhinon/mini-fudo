@@ -1,7 +1,6 @@
-require 'net/http'
-require 'uri'
-require 'json'
-require 'app_config'
+require 'rack'
+require 'auth_client'
+
 
 class AuthMiddleware
     PROTECTED_ROUTES = {
@@ -20,7 +19,7 @@ class AuthMiddleware
         auth_header = req.get_header('HTTP_AUTHORIZATION')
         return unauthorized('Missing or invalid Authorization header') unless auth_header
 
-        user_id = validate_token(auth_header)
+        user_id = extract_user_id_from_token(auth_header)
         return unauthorized('Invalid token') unless user_id
 
         env['current_user_id'] = user_id
@@ -33,21 +32,9 @@ class AuthMiddleware
         PROTECTED_ROUTES[req.request_method]&.include?(req.path_info)
     end
 
-    def validate_token(token)
-        uri = URI('http://auth-service:4000/validate_token')
-        http = Net::HTTP.new(uri.host, uri.port)
-        request = Net::HTTP::Get.new(uri)
-        request['Authorization'] = token
-        request['X-API-KEY']     = AppConfig::ADMIN_API_KEY
-
-        response = http.request(request)
-
-        return nil unless response.code == '200'
-
-        body = JSON.parse(response.body)
-        body['user_id']
-    rescue StandardError
-        nil
+    def extract_user_id_from_token(token)
+        response = AuthClient.validate_token(token)
+        response&.dig('user_id')
     end
 
     def unauthorized(message)

@@ -5,5 +5,5 @@ module AppConfig
     DB_PASS       = ENV.fetch('DB_PASS', 'secret')
     DB_NAME       = ENV.fetch('DB_NAME', 'fudo')
     SECRET_KEY    = ENV.fetch('JWT_SECRET')
-
+    INTERNAL_API_SECRET = ENV.fetch('INTERNAL_API_SECRET')
 end

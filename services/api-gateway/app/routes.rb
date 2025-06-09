@@ -1,5 +1,6 @@
 require 'controllers/healthcheck'
-require 'controllers/products'
+require 'controllers/products_create'
+require 'controllers/products_index'
 require 'controllers/login'
 require 'controllers/register'
 
@@ -15,7 +16,9 @@ module Routes
     when ['POST', '/register']
         AuthControllers::RegisterController.call(env)
     when ['POST', '/products']
-        ProductsController.call(env)
+        ProductControllers::ProductCreateController.call(env)
+    when ['GET', '/products']
+        ProductControllers::ProductIndexController.call(env)
     else
         [404, { 'Content-Type' => 'application/json' }, ['{"error":"Not found"}']]
     end

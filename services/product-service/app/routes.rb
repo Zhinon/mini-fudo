@@ -7,6 +7,8 @@ module Routes
         case [req.request_method, req.path_info]
         when ['GET', '/healthcheck']
             HealthcheckController.call(env)
+        when ['GET', '/products']
+            ProductsController.call(env)
         else
             [404, { 'Content-Type' => 'application/json' }, [{error: 'Not found'}.to_json]]
         end

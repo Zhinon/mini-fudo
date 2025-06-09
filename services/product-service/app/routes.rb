@@ -1,4 +1,5 @@
 require 'controllers/healthcheck'
+require 'controllers/products'
 
 module Routes
     def self.call(env)

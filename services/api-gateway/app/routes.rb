@@ -10,7 +10,7 @@ module Routes
     req = Rack::Request.new(env)
 
     case [req.request_method, req.path_info]
-    when ['GET', '/openapi.yaml']
+    when ['GET', '/openapi.yaml'], ['GET', '/AUTHORS']
         StaticControllers::StaticFileController.call(env)
     when ['GET', '/healthcheck']
         HealthcheckController.call(env)

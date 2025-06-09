@@ -1,0 +1,203 @@
+openapi: 3.0.3
+info:
+  title: API Gateway Fudo
+  description: >
+    API that exposes login, registration, and asynchronous product creation and listing
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Local development environment
+
+tags:
+  - name: Auth
+    description: Login and registration
+  - name: Products
+    description: Asynchronous product management
+
+paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Log in
+      description: >
+        Receives user credentials and returns a JWT token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              username: "miguel"
+              password: "123456"
+      responses:
+        '200':
+          description: >
+            JWT token. The response will be gzip-compressed if the request includes the Accept-Encoding: gzip header.
+          content:
+            application/json:
+              example:
+                token: "Bearer eyJhbGci..."
+        '400':
+          description: Invalid JSON
+        '401':
+          description: Invalid credentials
+        '422':
+          description: Invalid login data
+      parameters:
+        - $ref: '#/components/parameters/Accept-Encoding'
+
+  /register:
+    post:
+      tags:
+        - Auth
+      summary: Register a new user
+      description: >
+        Creates a new user with username and password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            example:
+              username: "miguel"
+              password: "123456"
+      responses:
+        '201':
+          description: >
+            User successfully created. The response will be gzip-compressed if the request includes the Accept-Encoding: gzip header.
+          content:
+            application/json:
+              example:
+                status: "User created"
+        '400':
+          description: Invalid JSON
+        '422':
+          description: Invalid registration data
+      parameters:
+        - $ref: '#/components/parameters/Accept-Encoding'
+
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Get products
+      description: >
+        Retrieves the list of products for the authenticated user.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: >
+            List of products. The response will be gzip-compressed if the request includes the Accept-Encoding: gzip header.
+          content:
+            application/json:
+              example:
+                - id: 1
+                  name: "Coca-Cola 500ml"
+                - id: 2
+                  name: "Pepsi 1000ml"
+        '401':
+          description: Unauthorized
+        '502':
+          description: Could not fetch products
+      parameters:
+        - $ref: '#/components/parameters/Accept-Encoding'
+
+    post:
+      tags:
+        - Products
+      summary: Create product
+      description: >
+        Sends a new product to be created asynchronously.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+            example:
+              name: "Coca-Cola 500ml"
+      responses:
+        '202':
+          description: >
+            Product creation accepted. The response will be gzip-compressed if the request includes the Accept-Encoding: gzip header.
+          content:
+            application/json:
+              example:
+                status: "Product is being created"
+        '400':
+          description: Invalid JSON
+        '401':
+          description: Unauthorized
+        '422':
+          description: Invalid product data
+      parameters:
+        - $ref: '#/components/parameters/Accept-Encoding'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    Accept-Encoding:
+      name: Accept-Encoding
+      in: header
+      description: Ask the server to respond with gzip-compressed content
+      required: false
+      schema:
+        type: string
+        example: gzip
+
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: "miguel"
+        password:
+          type: string
+          example: "123456"
+
+    RegisterRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          minLength: 3
+          example: "miguel"
+        password:
+          type: string
+          minLength: 6
+          example: "123456"
+
+    ProductRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: "Coca-Cola 500ml"
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unauthorized"

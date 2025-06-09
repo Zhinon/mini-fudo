@@ -12,4 +12,4 @@ COPY . .
 
 EXPOSE 4000
 
-CMD ["bundle", "exec", "puma", "-b", "tcp://0.0.0.0:4000"]
+CMD ["bundle", "exec", "puma", "-b", "tcp://0.0.0.0:4000", "config.ru"]

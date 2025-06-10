@@ -140,6 +140,36 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Accept-Encoding'
 
+  /openapi.yaml:
+    get:
+      summary: OpenAPI specification
+      description: >
+        Returns the OpenAPI specification as a static file. This file must never be cached by the client.
+      responses:
+        '200':
+          description: OpenAPI YAML file
+          content:
+            text/yaml:
+              schema:
+                type: string
+        '304':
+          description: Not Modified (ETag)
+
+  /AUTHORS:
+    get:
+      summary: Project author
+      description: >
+        Returns a static file with the name of the project author. This file should be cached by clients for 24 hours.
+      responses:
+        '200':
+          description: AUTHORS text file
+          content:
+            text/plain:
+              schema:
+                type: string
+        '304':
+          description: Not Modified (ETag)
+
 components:
   securitySchemes:
     bearerAuth:

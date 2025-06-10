@@ -47,6 +47,13 @@ Mini Fudo es la resolución de un challenge técnico de Fudo. Este proyecto demu
     docker compose up --build -d
     ```
 
+    > Nota: En algunos entornos, puede ocurrir que los servicios que dependen de PostgreSQL se inicien antes de que el motor esté listo, provocando fallos temporales de conexión.
+    > En ese caso, simplemente ejecutá nuevamente:
+
+    ```bash
+    docker compose up -d
+    ```
+
 3. Ejecutar las migraciones de base de datos:
 
     ```bash
@@ -97,6 +104,8 @@ curl -H 'Authorization: Bearer <token>' \
 ```
 
 > La definición completa de endpoints está en [`openapi.yaml`](services/api-gateway/static/openapi.yaml).
+> El archivo `openapi.yaml` se expone como recurso estático en la raíz (`/openapi.yaml`) y no debe ser cacheado.
+> Asimismo, el archivo `AUTHORS` se expone en `/AUTHORS` con cacheo habilitado por 24 horas.
 
 ---
 
@@ -107,6 +116,8 @@ Cada servicio define sus variables en un archivo `.env`. Estos archivos ya está
 ---
 
 ## Arquitectura
+
+![Diagrama de arquitectura](Docs/arch.png)
 
 Mini Fudo se compone de microservicios independientes en Ruby, comunicándose entre sí vía HTTP y RabbitMQ. Cada componente está containerizado para permitir despliegue controlado y escalable.
 

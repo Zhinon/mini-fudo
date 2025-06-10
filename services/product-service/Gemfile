@@ -1,10 +1,10 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'rack'
-gem 'json'
-gem 'pry'
-gem 'pry-byebug'
-gem 'puma'
-gem 'sequel'
-gem 'pg'
-gem 'bunny'
+gem "rack"
+gem "json"
+gem "pry"
+gem "pry-byebug"
+gem "puma"
+gem "sequel"
+gem "pg"
+gem "bunny"

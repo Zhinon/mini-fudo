@@ -1,9 +1,9 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'rack'
-gem 'json'
-gem 'pry'
-gem 'pry-byebug'
-gem 'puma'
-gem 'dry-validation'
-gem 'bunny'
+gem "rack"
+gem "json"
+gem "pry"
+gem "pry-byebug"
+gem "puma"
+gem "dry-validation"
+gem "bunny"

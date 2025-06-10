@@ -2,7 +2,7 @@
 
 > Microservicios en Ruby con autenticación segura, asincronismo real y arquitectura escalable.
 
-Mini Fudo es la resolución de un challenge técnico inspirado en Fudo. Este proyecto demuestra cómo construir una arquitectura moderna basada en microservicios usando Ruby, con separación de responsabilidades, comunicación asíncrona real con RabbitMQ, autenticación robusta y respuestas comprimidas automáticamente.
+Mini Fudo es la resolución de un challenge técnico de Fudo. Este proyecto demuestra cómo construir una arquitectura moderna basada en microservicios usando Ruby, con separación de responsabilidades, comunicación asíncrona real con RabbitMQ, autenticación robusta y respuestas comprimidas automáticamente.
 
 ---
 
@@ -14,13 +14,14 @@ Mini Fudo es la resolución de un challenge técnico inspirado en Fudo. Este pro
 - [Configuración](#configuración)
 - [Arquitectura](#arquitectura)
 - [Tecnologías utilizadas](#tecnologías-utilizadas)
+- [Documentación adicional](#documentación-adicional)
 
 ---
 
 ## Características principales
 
 - Autenticación segura con contraseñas hasheadas (con salt) y JWT con expiración a 24hs.
-- Creación **totalmente asíncrona** de productos usando RabbitMQ y múltiples workers.
+- Creación totalmente asíncrona de productos usando RabbitMQ y múltiples workers.
 - Arquitectura modular y desacoplada con separación clara de responsabilidades.
 - Escalabilidad horizontal mediante contenedores Docker independientes.
 - Respuestas comprimidas automáticamente si el cliente envía `Accept-Encoding: gzip`.
@@ -129,3 +130,9 @@ Consulta [Docs/Architecture.md](/Docs/Architecture.md) para una descripción det
 - **JWT**
 
 ---
+
+## Documentación adicional
+
+- [Definición de Fudo en menos de 100 palabras](./FUDO.md)
+- [Definición de HTTP en menos de 50 palabras](./HTTP.md)
+- [Definición de TCP en menos de 50 palabras](./TCP.md)

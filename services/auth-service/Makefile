@@ -19,3 +19,6 @@ logs:
 
 bash:
 	docker compose exec -it $(SERVICE) bash
+
+test:
+	docker compose run --rm $(SERVICE) bundle exec rspec

@@ -4,7 +4,11 @@ require "bcrypt"
 class RegisterController
   def self.call(env)
     req = Rack::Request.new(env)
-    params = JSON.parse(req.body.read)
+    begin
+      params = JSON.parse(req.body.read)
+    rescue JSON::ParserError
+      return [400, {"Content-Type" => "application/json"}, [{error: "Invalid JSON format"}.to_json]]
+    end
 
     username = params["username"]
     password = params["password"]

@@ -6,12 +6,16 @@ require "app_config"
 class LoginController
   def self.call(env)
     req = Rack::Request.new(env)
-    params = JSON.parse(req.body.read)
+    begin
+      params = JSON.parse(req.body.read)
+    rescue JSON::ParserError
+      return [400, json_header, [error("Invalid JSON format")]]
+    end
 
     username = params["username"]
     password = params["password"]
 
-    return [422, json, [error("Missing username or password")]] unless username && password
+    return [422, json_header, [error("Missing username or password")]] unless username && password
 
     user = DB[:users].where(username: username).first
 
@@ -35,7 +39,7 @@ class LoginController
   end
 
   def self.json_header
-    {"Content-Type": "application/json"}
+    {"Content-Type" => "application/json"}
   end
 
   def self.error(msg)

@@ -9,3 +9,10 @@ gem "sequel"
 gem "pg"
 gem "bcrypt"
 gem "jwt"
+
+group :test do
+  gem "sqlite3"
+  gem "rspec"
+  gem "rack-test"
+  gem "webmock"
+end

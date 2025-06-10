@@ -8,3 +8,10 @@ gem "puma"
 gem "sequel"
 gem "pg"
 gem "bunny"
+
+group :test do
+  gem "sqlite3"
+  gem "rspec"
+  gem "rack-test"
+  gem "webmock"
+end

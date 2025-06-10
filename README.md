@@ -14,6 +14,7 @@ Mini Fudo es la resolución de un challenge técnico de Fudo. Este proyecto demu
 - [Configuración](#configuración)
 - [Arquitectura](#arquitectura)
 - [Tecnologías utilizadas](#tecnologías-utilizadas)
+- [Tests](#tests)
 - [Documentación adicional](#documentación-adicional)
 
 ---
@@ -128,6 +129,26 @@ Consulta [Docs/Architecture.md](/Docs/Architecture.md) para una descripción det
 - **Docker** + **Docker Compose**
 - **OpenAPI 3.0**
 - **JWT**
+
+---
+
+## Tests
+
+Para ejecutar los tests de cada servicio, dirigite a la carpeta correspondiente y ejecutá:
+
+```bash
+cd services/auth-service
+make test
+
+cd services/product-service
+make test
+
+cd services/api-gateway
+make test
+```
+
+> Internamente, esto corre los tests con RSpec dentro del contenedor correspondiente.
+> Los tests se ejecutan utilizando SQLite como base de datos embebida para mayor velocidad y simplicidad.
 
 ---
 

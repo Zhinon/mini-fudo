@@ -12,6 +12,26 @@ module Workers
       @channel.prefetch(1)
     end
 
+    def process(data)
+      name = data["name"]
+      user_id = data["user_id"]
+      sent_at = data["timestamp"].to_i
+      now = Time.now.to_i
+      diff = now - sent_at
+
+      if diff < 5
+        sleep(5 - diff)
+      end
+
+      exists = DB[:products].where(name: name, user_id: user_id).first
+      if exists
+        puts "🟡 Product '#{name}' already exists for user #{user_id}. Skipping insert."
+      else
+        DB[:products].insert(name: name, user_id: user_id)
+        puts "✅ Product inserted successfully"
+      end
+    end
+
     def start
       puts "👂 Worker started. Waiting for messages..."
 
@@ -19,29 +39,8 @@ module Workers
         data = JSON.parse(body)
         puts "📩 Received: #{data.inspect}"
 
-        sent_at = data["timestamp"].to_i
-        now = Time.now.to_i
-        diff = now - sent_at
+        process(data)
 
-        if diff < 5
-          wait_time = 5 - diff
-          puts "⏳ Waiting #{wait_time}s to respect delay..."
-          sleep(wait_time)
-        end
-
-        name = data["name"]
-        user_id = data["user_id"]
-        exists = DB[:products].where(name: name, user_id: user_id).first
-        if exists
-          puts "🟡 Product '#{name}' already exists for user #{user_id}. Skipping insert."
-        else
-          DB[:products].insert(
-            name: data["name"],
-            user_id: data["user_id"]
-          )
-
-          puts "✅ Product inserted successfully"
-        end
         @channel.ack(delivery_info.delivery_tag)
       rescue => e
         puts "❌ Error processing message: #{e.message}"

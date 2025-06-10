@@ -22,3 +22,6 @@ bash:
 
 pworker:
 	$(DOCKER_RUN) ruby workers/product_creation_worker.rb
+
+test:
+	docker compose run --rm $(SERVICE) bundle exec rspec

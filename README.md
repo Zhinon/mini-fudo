@@ -37,7 +37,7 @@ Mini Fudo es la resolución de un challenge técnico de Fudo. Este proyecto demu
 1. Clonar el repositorio y ubicarse en la carpeta raíz del proyecto:
 
     ```bash
-    git clone <url-del-repo>
+    git clone git@github.com:Zhinon/mini-fudo.git
     cd mini-fudo
     ```
 

@@ -1,19 +1,19 @@
-require 'digest'
+require "digest"
 
 module StaticControllers
   class StaticFileController
-    PUBLIC_DIR = File.expand_path('../../../static', __FILE__)
+    PUBLIC_DIR = File.expand_path("../../../static", __FILE__)
 
     FILE_CONFIG = {
-      '/openapi.yaml' => {
-        filename: 'openapi.yaml',
-        content_type: 'application/yaml',
-        cache_control: 'no-store'
+      "/openapi.yaml" => {
+        filename: "openapi.yaml",
+        content_type: "application/yaml",
+        cache_control: "no-store"
       },
-      '/AUTHORS' => {
-        filename: 'AUTHORS',
-        content_type: 'text/plain',
-        cache_control: 'public, max-age=86400'  # 24 hs
+      "/AUTHORS" => {
+        filename: "AUTHORS",
+        content_type: "text/plain",
+        cache_control: "public, max-age=86400"  # 24 hs
       }
     }
 
@@ -28,21 +28,21 @@ module StaticControllers
       content = File.read(full_path)
       etag = %("#{Digest::SHA256.hexdigest(content)}")
 
-      if env['HTTP_IF_NONE_MATCH'] == etag
-        return [304, { 'ETag' => etag }, []]
+      if env["HTTP_IF_NONE_MATCH"] == etag
+        return [304, {"ETag" => etag}, []]
       end
 
       headers = {
-        'Content-Type' => config[:content_type],
-        'Cache-Control' => config[:cache_control],
-        'ETag' => etag
+        "Content-Type" => config[:content_type],
+        "Cache-Control" => config[:cache_control],
+        "ETag" => etag
       }
 
       [200, headers, [content]]
     end
 
     def self.not_found
-      [404, { 'Content-Type' => 'application/json' }, [{ error: 'File not found' }.to_json]]
+      [404, {"Content-Type" => "application/json"}, [{error: "File not found"}.to_json]]
     end
   end
 end

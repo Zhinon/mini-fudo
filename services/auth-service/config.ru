@@ -1,4 +1,4 @@
-require_relative 'config/boot'
-require 'app'
+require_relative "config/boot"
+require "app"
 
 run App
